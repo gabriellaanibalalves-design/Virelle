@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virelle</title>
+    <style>
+/* ==================== GERAL ==================== */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff5fa;
+    color: #333;
+    text-align: center;
+}
+
+h2 {
+    color: #943f69;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+/* tracinho colorido embaixo dos titulos */
+h2::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #b85c87;
+    border-radius: 2px;
+    margin: 10px auto 0 auto;
+}
+
+
+/* ==================== CABECALHO ==================== */
+header {
+    background: linear-gradient(135deg, #d8a7bd, #b85c87);
+    color: white;
+    padding: 30px 20px;
+}
+
+header h1 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.banner {
+    width: 450px;
+    max-width: 90%;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==================== MENU ==================== */
+.menu {
+    background-color: #943f69;
+    padding: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.menu a {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 20px;
+}
+
+.menu a:hover {
+    background-color: #d8a7bd;
+    color: #4a1f35;
+}
+
+
+/* ==================== SECOES ==================== */
+section {
+    padding: 40px 20px;
+    scroll-margin-top: 60px;
+}
+
+/* uma secao rosinha e outra branca, para separar */
+main section:nth-child(even) {
+    background-color: white;
+}
+
+
+/* ==================== PRODUTOS ==================== */
+.produtos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.produto {
+    background-color: white;
+    width: 220px;
+    padding: 12px;
+    border: 3px solid #f0d9e5;
+    border-radius: 14px;
+    box-shadow: 0 3px 8px rgba(148, 63, 105, 0.15);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.produto:hover {
+    border-color: #d8a7bd;
+    transform: translateY(-4px);
+}
+
+.produto.selecionado {
+    border-color: #b85c87;
+    background-color: #fbeaf2;
+}
+
+/* TAMANHO DAS FOTOS: todas ficam iguais (220px de largura e 260px de altura) */
+.produto img {
+    display: block;
+    width: 220px;
+    max-width: 100%;
+    height: 260px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 10px;
+    background-color: #ead2df;
+}
+
+.produto p {
+    margin: 10px 0 0 0;
+}
+
+.preco {
+    color: #b85c87;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+/* ==================== PEDIDO (lado a lado) ==================== */
+.pedido {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto auto 1fr;
+    gap: 10px 30px;
+    background-color: #ead2df;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(148, 63, 105, 0.2);
+    text-align: left;
+}
+
+/* titulo ocupa as duas colunas */
+.pedido h2 {
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
+/* ESQUERDA: lista dos produtos escolhidos */
+#listaPedido {
+    grid-column: 1;
+    grid-row: 2 / span 5;
+}
+
+/* DIREITA: total, nome e botao (vao para a coluna 2 automaticamente) */
+.pedido > .total,
+.pedido > label,
+.pedido > input,
+.pedido > button,
+.pedido > .resultado {
+    grid-column: 2;
+}
+
+.item {
+    background-color: white;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+.pedido label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.pedido input,
+.pedido select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.total {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: #943f69;
+}
+
+button {
+    margin-top: 15px;
+    padding: 14px;
+    background-color: #b85c87;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #943f69;
+}
+
+.resultado {
+    display: none;
+    background-color: white;
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+
+/* ==================== CONTATOS ==================== */
+#contatos p {
+    margin: 8px 0;
+    font-size: 18px;
+}
+
+
+/* ==================== RODAPE (barra colorida) ==================== */
+footer {
+    background: linear-gradient(90deg, #943f69, #b85c87, #d8a7bd);
+    color: white;
+    font-weight: bold;
+    padding: 25px;
+}
+
+footer p {
+    margin: 0;
+}
+
+
+/* ==================== CELULAR ==================== */
+@media (max-width: 700px) {
+
+    /* no celular o pedido volta a ficar um embaixo do outro */
+    .pedido {
+        display: block;
+        padding: 20px;
+    }
+
+    .produto {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .menu a {
+        padding: 6px 10px;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+    <!-- CABE&#199;ALHO -->
+    <header>
+        <h1>Bem-vindos &#224; Virelle</h1>
+        <img width="400" src="https://i.ibb.co/W4vRHJck/imagem-2026-08-05-162412142.png" alt="Banner" class="banner">
+    </header>
+
+    <!-- MENU -->
+    <nav class="menu">
+        <a href="#calcas">Cal&#231;as</a>
+        <a href="#vestidos">Vestidos</a>
+        <a href="#blusas">Blusas</a>
+        <a href="#conjuntos">Conjuntos</a>
+        <a href="#saias">Saias</a>
+        <a href="#pedido">Pedido</a>
+        <a href="#contatos">Contatos</a>
+    </nav>
+
+    <main>
+
+        <!-- CAL&#199;AS -->
+        <section id="calcas">
+            <h2>Cal&#231;as</h2>
+            <div class="produtos">
+
+                <div class="produto" onclick="escolher('Cal&#231;a Le Lis Balloon', 200, this)">
+                    <img width="220" height="260" style="object-fit: cover;" src="https://vistalelis.vtexassets.com/arquivos/ids/504799-1920-auto?v=639131834798300000&width=1920&height=auto&aspect=true"
+                        alt="Cal&#231;a Le Lis Balloon">
+                    <p>Cal&#231;a Le Lis Balloon</p>
+                    <p class="preco">R$ 200,00</p>
+                </div>
+
+                <div class="produto" onclick="escolher('Cal&#231;a Jeans Baggy', 180, this)">
+                    <img width="220" height="260" style="object-fit: cover;" src="https://acdn-us.mitiendanube.com/stores/001/270/413/products/img_1707-5-80a0c75429b389a4c817576214229928-640-0.webp"
+                        alt="Cal&#231;a Jeans Baggy">
+                    <p>Cal&#231;a Jeans Baggy</p>
+                    <p class="preco">R$ 180,00</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VESTIDOS -->
+        <section id="vestidos">
+            <h2>Vestidos</h2>
+            <div class="produtos">
+
+                <div class="produto" onclick="escolher('Vestido Degag&#234; Curto', 150, this)">
+                    <img width="220" height="260" style="object-fit: cover;" src="https://lojafarm.vteximg.com.br/arquivos/ids/3824209-1416-2124/360871_01071_2-VESTIDO-DEGAGE-CURTO.jpg?v=639181187200470000"
+                        alt="Vestido Degag&#234; Curto">
+                    <p>Vestido Degag&#234; Curto</p>
+                    <p class="preco">R$ 150,00</p>
+                </div>
+
+                <div class="produto" onclick="escolher('Vestido Curto Alcinha Estampado Chita Pintada', 200, this)">
+                    <img width="220" height="260" style="object-fit: cover;" src="https://lojafarm.vteximg.com.br/arquivos/ids/3818338-1416-2124/366669_57833_1-VESTIDO-CURTO-ALCINHA-CHITA-PINTADA.jpg?v=639180893722670000"
+                        alt="Vestido Curto Alcinha Estampado Chita Pintada">
+                    <p>Vestido Curto Alcinha Estampado Chita Pintada</p>
+                    <p class="preco">R$ 200,00</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- BLUSAS -->
+        <section id="blusas">
+            <h2>Blusas</h2>
+            <div class="produtos">
+
+                <div class="produto" onclick="escolher('Blusa Frente &#218;nica com Decote Drapeado', 50, this)">
+                    <img width="220" height="260" style="object-fit: cover;" src="https://s.favlab.com.br/product/2026/03/113631-1405.jpg?format=webp"
+                        alt="Blusa Frente &#218;nica com Decote Drapeado">
+                    <p>Blusa Frente &#218;nica com Decote Drapeado</p>
+                    <p class="preco">R$ 50,00</p>
+                </div>
+
+                <div class="produto" onclick="escolher('Blusa Malha Especial Arara Brasil', 100, this)">
+                    <img width="220" height="260" style="object-fit: cover;" src="https://lojafarm.vteximg.com.br/arquivos/ids/3858270-1416-2124/370044_07448_2-TSHIRT-MALHA-ESPECIAL-ARARA-BRASIL.jpg?v=639199184784100000"
+                        alt="Blusa Malha Especial Arara Brasil">
+                    <p>Blusa Malha Especial Arara Brasil</p>
+                    <p class="preco">R$ 100,00</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONJUNTOS -->
+        <section id="conjuntos">
+            <h2>Conjuntos</h2>
+            <div class="produtos">
+
+                <div class="produto" onclick="escolher('Tweed com Colete e Saia Min', 150, this)">
+                    <img width="220" height="260" style="object-fit: cover;" src="https://s.favlab.com.br/product/2026/03/113567-1382-1.jpg?format=webp"
+                        alt="Tweed com Colete e Saia Min">
+                    <p>Tweed com Colete e Saia Min</p>
+                    <p class="preco">R$ 150,00</p>
+                </div>
+
+                <div class="produto" onclick="escolher('Xadrez Cropped e Shorts', 170, this)">
+                    <img width="220" height="260" style="object-fit: cover;" src="https://s.favlab.com.br/product/2026/03/113681-1383-1.jpg?format=webp"
+                        alt="Xadrez Cropped e Shorts">
+                    <p>Xadrez Cropped e Shorts</p>
+                    <p class="preco">R$ 170,00</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SAIAS -->
+        <section id="saias">
+            <h2>Saias</h2>
+            <div class="produtos">
+
+                <div class="produto" onclick="escolher('Saia Jeans Curta Com Recorte Frontal', 80, this)">
+                    <img width="220" height="260" style="object-fit: cover;" src="https://s.favlab.com.br/product/2026/04/121095-0059-2.jpg?format=webp&width=450&height=675"
+                        alt="Saia Jeans Curta Com Recorte Frontal">
+                    <p>Saia Jeans Curta Com Recorte Frontal</p>
+                    <p class="preco">R$ 80,00</p>
+                </div>
+
+                <div class="produto" onclick="escolher('Saia Curta em PU Ajustada', 85, this)">
+                    <!-- TROQUE pelo link completo da imagem -->
+                    <img width="220" height="260" style="object-fit: cover;" src="COLE-AQUI-O-LINK-DA-IMAGEM" alt="Saia Curta em PU Ajustada">
+                    <p>Saia Curta em PU Ajustada</p>
+                    <p class="preco">R$ 85,00</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PEDIDO -->
+        <section id="pedido">
+            <div class="pedido">
+                <h2>Seu Pedido</h2>
+
+                <!-- aqui o JavaScript mostra os produtos escolhidos -->
+                <div id="listaPedido">
+                    <p>Nenhum produto selecionado. Clique nas pe&#231;as acima.</p>
+                </div>
+
+                <p class="total" id="total"></p>
+
+                <label>Seu nome</label>
+                <input type="text" id="nomeCliente" placeholder="Digite seu nome">
+
+                <button onclick="finalizar()">Finalizar Pedido</button>
+
+                <div class="resultado" id="resultado"></div>
+            </div>
+        </section>
+
+        <!-- CONTATOS -->
+        <section id="contatos">
+            <h2>Contatos</h2>
+            <p>WhatsApp: (31) 00000-0000</p>
+            <p>Instagram: @virelle</p>
+            <p>E-mail: contato@virelle.com.br</p>
+        </section>
+
+    </main>
+
+    <!-- RODAP&#201; -->
+    <footer>
+        <p>&#169; 2026 Virelle - Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+// lista com os produtos que o cliente escolheu
+// cada produto guarda: nome, preco, tamanho e quantidade
+var carrinho = [];
+
+
+// roda quando o cliente clica em um produto
+// clicar uma vez adiciona, clicar de novo tira
+function escolher(nome, preco, elemento) {
+
+    // procura se o produto ja esta na lista
+    var posicao = -1;
+    for (var i = 0; i < carrinho.length; i++) {
+        if (carrinho[i].nome == nome) {
+            posicao = i;
+        }
+    }
+
+    if (posicao == -1) {
+        // nao estava na lista: adiciona
+        carrinho.push({ nome: nome, preco: preco, tamanho: "", quantidade: 1 });
+        elemento.classList.add("selecionado");
+    } else {
+        // ja estava na lista: tira
+        carrinho.splice(posicao, 1);
+        elemento.classList.remove("selecionado");
+    }
+
+    document.getElementById("resultado").style.display = "none";
+    mostrarPedido();
+}
+
+
+// monta a lista de produtos na area do pedido
+function mostrarPedido() {
+
+    var lista = document.getElementById("listaPedido");
+    var total = 0;
+    var html = "";
+
+    if (carrinho.length == 0) {
+        lista.innerHTML = "<p>Nenhum produto selecionado. Clique nas pe\u00e7as acima.</p>";
+        document.getElementById("total").innerHTML = "";
+        return;
+    }
+
+    for (var i = 0; i < carrinho.length; i++) {
+        var item = carrinho[i];
+        var subtotal = item.preco * item.quantidade;
+        total = total + subtotal;
+
+        html = html + '<div class="item">';
+        html = html + '<p><strong>' + item.nome + '</strong> - R$ ' + item.preco + ',00</p>';
+
+        // escolher o tamanho desse produto
+        html = html + '<label>Tamanho</label>';
+        html = html + '<select onchange="mudarTamanho(' + i + ', this.value)">';
+        html = html + '<option value="">Selecione</option>';
+        var tamanhos = ["P", "M", "G", "GG"];
+        for (var j = 0; j < tamanhos.length; j++) {
+            var marcado = "";
+            if (item.tamanho == tamanhos[j]) {
+                marcado = " selected";
+            }
+            html = html + '<option value="' + tamanhos[j] + '"' + marcado + '>' + tamanhos[j] + '</option>';
+        }
+        html = html + '</select>';
+
+        // escolher a quantidade desse produto
+        html = html + '<label>Quantidade</label>';
+        html = html + '<input type="number" min="1" value="' + item.quantidade + '" onchange="mudarQuantidade(' + i + ', this.value)">';
+
+        html = html + '<p>Subtotal: R$ ' + subtotal + ',00</p>';
+        html = html + '</div>';
+    }
+
+    lista.innerHTML = html;
+    document.getElementById("total").innerHTML = "Total: R$ " + total + ",00";
+}
+
+
+// guarda o tamanho escolhido para o produto numero "posicao"
+function mudarTamanho(posicao, valor) {
+    carrinho[posicao].tamanho = valor;
+}
+
+
+// guarda a quantidade e atualiza os valores
+function mudarQuantidade(posicao, valor) {
+    if (valor < 1) {
+        valor = 1;
+    }
+    carrinho[posicao].quantidade = parseInt(valor);
+    mostrarPedido();
+}
+
+
+// roda quando o cliente clica em "Finalizar Pedido"
+function finalizar() {
+
+    var nomeCliente = document.getElementById("nomeCliente").value;
+
+    // verifica se tudo foi preenchido
+    if (carrinho.length == 0) {
+        alert("Escolha pelo menos um produto!");
+        return;
+    }
+
+    for (var i = 0; i < carrinho.length; i++) {
+        if (carrinho[i].tamanho == "") {
+            alert("Escolha o tamanho de: " + carrinho[i].nome);
+            return;
+        }
+    }
+
+    if (nomeCliente == "") {
+        alert("Digite seu nome.");
+        return;
+    }
+
+    // monta o resumo e soma o total
+    var total = 0;
+    var resumo = "<h3>Pedido realizado!</h3>";
+    resumo = resumo + "<p>Cliente: " + nomeCliente + "</p>";
+
+    for (var i = 0; i < carrinho.length; i++) {
+        var item = carrinho[i];
+        var subtotal = item.preco * item.quantidade;
+        total = total + subtotal;
+
+        resumo = resumo + "<p>" + item.quantidade + "x " + item.nome +
+            " (tamanho " + item.tamanho + ") = R$ " + subtotal + ",00</p>";
+    }
+
+    resumo = resumo + "<p><strong>Total: R$ " + total + ",00</strong></p>";
+
+    var resultado = document.getElementById("resultado");
+    resultado.innerHTML = resumo;
+    resultado.style.display = "block";
+}
+
+    </script>
+
+</body>
+
+</html>
+
+
+
+
+/* ==================== CONTATOS ==================== */
+#contatos p {
+    margin: 8px 0;
+    font-size: 18px;
+}
+
+
+/* ==================== RODAPÉ (barra colorida) ==================== */
+footer {
+    background: linear-gradient(90deg, #943f69, #b85c87, #d8a7bd);
+    color: white;
+    font-weight: bold;
+    padding: 25px;
+}
+
+footer p {
+    margin: 0;
+}
+
+
+/* ==================== CELULAR ==================== */
+@media (max-width: 700px) {
+
+    /* no celular o pedido volta a ficar um embaixo do outro */
+    .pedido {
+        display: block;
+        padding: 20px;
+    }
+
+    .produto {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .menu a {
+        padding: 6px 10px;
+    }
+}
